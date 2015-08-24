@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <title>TALKY TALK</title>
+    <style>
+      
+      * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+      }
+
+      body { 
+        font: 20px Helvetica, Arial; 
+        padding: 20px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <a href="javascript:submit('fwd')">Forward</a>
+    <br/>
+    <a href="javascript:submit('back')">Back</a>
+    <br/>
+    <a href="javascript:submit('random')">Random</a>
+    <br/>
+    <a href="javascript:submit('realrandom')">Really Random</a>
+    <br/>
+    <form action="javascript:submitChat('chat')">
+      <input id="chatbox" type="text" name="chat" value="">
+      <input type="submit" value="send">
+    </form>
+    <br/>
+    <a href="javascript:submit('cchat')">clear chat</a>
+  </body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <script>
+
+    // start the socket
+    var socket = io.connect(window.location.origin);
+
+    // we don't need anything on connect
+    socket.on('connect', function () {
+      console.log(" connected ");
+    });
+
+    // we don't need anything on disconnect
+    socket.on('disconnect', function () {});
+
+    function submitChat(val) {
+
+      socket.emit('chat', $('#chatbox').val() + "<br/>");
+    }
+
+    function submit( val ) {
+
+        console.log(" OK sent ");
+        socket.emit('cmd', val);
+    }
+
+  </script>
+
+</html>
